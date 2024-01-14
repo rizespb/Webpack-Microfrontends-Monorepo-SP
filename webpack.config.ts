@@ -1,14 +1,19 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
+// Этот импорт нужен, чтобы TS подхватил типы из dev-server и в объекте конфигов webpack появились типы для свойства devServer
+import type { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 
 type Mode = 'production' | 'development';
 
 interface EnvCariables {
   mode: Mode;
+  port: number;
 }
 
 export default (env: EnvCariables) => {
+  const isDev = env.mode === 'development';
+
   const config: webpack.Configuration = {
     // Режимы production и development отличаются оптимизациями, минимизацией кода, скоростью сборки и пр.
     mode: env.mode ?? 'development',
@@ -40,8 +45,10 @@ export default (env: EnvCariables) => {
 
       // Показывает в терминале процент выполнения во время сборки
       // В production не рекомендуют использовать, т.к. он может сильно замедлять сборку
-      new webpack.ProgressPlugin(),
-    ],
+      isDev && new webpack.ProgressPlugin(),
+
+      // Убираем все undefined, null, boolean, которые могли попасть в массив в зависимости от mode (development/production) и т.д.
+    ].filter(Boolean),
 
     // Лоадеры. При указании лоадеров надо учитывать, что каждый следующий лоадер получает код, обработанный предыдущим лоадером
     module: {
@@ -61,6 +68,17 @@ export default (env: EnvCariables) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
     },
+
+    // Настройка для формирования source map
+    devtool: isDev && 'inline-source-map',
+
+    // Настройки дев сервера для webpack-dev-server (автоматическое обновление страницы при изменении кода)
+    devServer: isDev
+      ? {
+          port: env.port ?? 3000,
+          open: true,
+        }
+      : undefined,
   };
 
   return config;
