@@ -4,6 +4,8 @@ import webpack from 'webpack';
 // Этот импорт нужен, чтобы TS подхватил типы из dev-server и в объекте конфигов webpack появились типы для свойства devServer
 import type { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
 type Mode = 'production' | 'development';
 
 interface EnvCariables {
@@ -13,6 +15,7 @@ interface EnvCariables {
 
 export default (env: EnvCariables) => {
   const isDev = env.mode === 'development';
+  const isProd = env.mode === 'production';
 
   const config: webpack.Configuration = {
     // Режимы production и development отличаются оптимизациями, минимизацией кода, скоростью сборки и пр.
@@ -47,12 +50,29 @@ export default (env: EnvCariables) => {
       // В production не рекомендуют использовать, т.к. он может сильно замедлять сборку
       isDev && new webpack.ProgressPlugin(),
 
+      isProd &&
+        new MiniCssExtractPlugin({
+          // Сохраним файлы со стилями в папку сss
+          // На месте name будет main (дефолтное значение в webpack)\
+          // contenthash - хэш по контенту (будет пересчитываться при изменении контента)
+          filename: 'css/[name].[contenthash:8].css',
+          chunkFilename: 'css/[name].[contenthash:8].css',
+        }),
+
       // Убираем все undefined, null, boolean, которые могли попасть в массив в зависимости от mode (development/production) и т.д.
     ].filter(Boolean),
 
     // Лоадеры. При указании лоадеров надо учитывать, что каждый следующий лоадер получает код, обработанный предыдущим лоадером
     module: {
       rules: [
+        {
+          test: /\.s[ac]ss$/i,
+          // Именно тут порядок важен. Лоадеры будут вызываться с конца: вначале отработает sass-loader, он передаст код css-loader-у, потом код будет передан style-loader
+          // Без использования mini-css-extract-plugin стили будут помещены в js-код в сборке (это сделает style-loader). mini-css-extract-plugin позволяет собирать стили в отдельные css-файлы
+          // use: ['style-loader', 'css-loader', 'sass-loader'],
+          use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        },
+
         // ts-loader умеет работать с JSX
         // Если бы не использовали TypeScript, нам бы пришлось подключать babel-loader,
         {
