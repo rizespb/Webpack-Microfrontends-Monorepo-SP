@@ -19,7 +19,7 @@ export default (env: EnvCariables) => {
     mode: env.mode ?? 'development',
 
     // Путь к точке входа в приложение
-    entry: path.resolve(__dirname, 'src', 'index.ts'),
+    entry: path.resolve(__dirname, 'src', 'index.tsx'),
     // Если точек входа несколько, то:
     // entry: {
     //   helloWorld: path.resolve(__dirname, 'src', 'index.js'),
@@ -53,6 +53,8 @@ export default (env: EnvCariables) => {
     // Лоадеры. При указании лоадеров надо учитывать, что каждый следующий лоадер получает код, обработанный предыдущим лоадером
     module: {
       rules: [
+        // ts-loader умеет работать с JSX
+        // Если бы не использовали TypeScript, нам бы пришлось подключать babel-loader,
         {
           // Регулярка для имени файла, которые надо обрабатывать лоадером
           test: /\.tsx?$/,
