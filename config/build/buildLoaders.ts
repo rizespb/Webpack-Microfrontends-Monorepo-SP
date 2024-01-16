@@ -5,6 +5,41 @@ import { BuildOptions } from './types/types';
 export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
   const isDev = options.mode === 'development';
 
+  // Лоадер для изображений
+  const assetLoader = {
+    test: /\.(png|jpg|jpeg|gif)$/i,
+    type: 'asset/resource',
+  };
+
+  // Лоадер для svg
+  const svgLoader = {
+    test: /\.svg$/i,
+    issuer: /\.[jt]sx?$/,
+    use: [
+      {
+        loader: '@svgr/webpack',
+        options: {
+          // Говорит о том, что с svg можно работать как с иконкой, передавая размеры
+          // Если в svg передать width и height без этой опции, то svg-контейнер будет использовать новые размеры, но сама закрашенная иконка будет иметь оригинальный размер
+          // с icon: true сама видимая иконка будет масштабироваться вместе с контейнером
+          icon: true,
+          // Настройка, которая позволит передавать в иконку цвет с помощью color (стилевое свойство)
+          svgoConfig: {
+            plugins: [
+              {
+                name: 'convertColors',
+                params: {
+                  currentColor: true,
+                },
+              },
+            ],
+          },
+        },
+      },
+    ],
+  };
+
+  // CSS-Лоадер для изоляции стилей
   const cssLoaderWithModules = {
     loader: 'css-loader',
     options: {
@@ -33,10 +68,13 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
   };
 
   return [
+    assetLoader,
     scssLoader,
 
     // ts-loader умеет работать с JSX
     // Если бы не использовали TypeScript, нам бы пришлось подключать babel-loader,
     tsLoader,
+
+    svgLoader,
   ];
 }
