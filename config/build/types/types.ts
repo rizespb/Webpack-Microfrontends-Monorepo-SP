@@ -15,4 +15,6 @@ export interface BuildOptions {
   port: number;
   paths: BuildPaths;
   mode: BuildMode;
+  // Подключать или нет BundleAnalyzerPlugin
+  analyzer?: boolean;
 }

@@ -6,6 +6,7 @@ import path from 'path';
 interface EnvCariables {
   mode: BuildMode;
   port: number;
+  analyzer: boolean;
 }
 
 export default (env: EnvCariables) => {
@@ -19,6 +20,7 @@ export default (env: EnvCariables) => {
     port: env.port ?? 3000,
     mode: env.mode ?? 'development',
     paths,
+    analyzer: env.analyzer,
   });
 
   return config;
