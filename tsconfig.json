@@ -24,7 +24,13 @@
     // import * as React from 'react';
     // можно писать такой
     // import React from 'react';
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+
+    // Алиасы
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   // Для того, чтобы импорты работали в webpack.config.ts переопределяем module для компилятора ts-node
   "ts-node": {

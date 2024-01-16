@@ -8,5 +8,9 @@ export function buildResolvers(options: BuildOptions): Configuration['resolve'] 
     // То есть мы можем не указывать расширения при импорте:
     // import { calc } from 'test' - webpack вначале проверит наличие файла test.tsx, если не найдет, то проверит наличие test.ts и т.д.
     extensions: ['.tsx', '.ts', '.js'],
+
+    alias: {
+      '@': options.paths.src,
+    },
   };
 }

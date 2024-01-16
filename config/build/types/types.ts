@@ -7,6 +7,9 @@ export interface BuildPaths {
 
   // путь до папки со сборкой
   output: string;
+
+  // путь до папки src
+  src: string;
 }
 
 export type BuildMode = 'production' | 'development';

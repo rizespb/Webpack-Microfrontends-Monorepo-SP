@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import classes from './App.module.scss';
 import { Link, Outlet } from 'react-router-dom';
+import About from '@/pages/About/About';
 
 export const App = () => {
   const [count, setCount] = useState<number>(0);
@@ -19,7 +20,7 @@ export const App = () => {
         <span>inc</span>
       </button>
 
-      <Outlet />
+      <About />
     </div>
   );
 };
