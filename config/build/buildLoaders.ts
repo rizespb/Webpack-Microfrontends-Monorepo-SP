@@ -60,10 +60,29 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
     use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, cssLoaderWithModules, 'sass-loader'],
   };
 
+  // const tsLoader = {
+  //   // Регулярка для имени файла, которые надо обрабатывать лоадером
+  //   test: /\.tsx?$/,
+  //   use: 'ts-loader',
+  //   exclude: /node_modules/,
+  // };
+
   const tsLoader = {
     // Регулярка для имени файла, которые надо обрабатывать лоадером
     test: /\.tsx?$/,
-    use: 'ts-loader',
+    use: [
+      {
+        loader: 'ts-loader',
+
+        // Добавили эту опцию для того, чтобы сборка выполнялась БЕЗ проверки типов в dev-режиме
+        // При этом ошибка TS все равно будут подсвечиваться в редакторе, т.к. за это отвечает не webpack, а typescript
+        // Этим самым мы существенно ускоряем сборку
+        // Чтобы продолжать выполнять проверку типов "налету", можно в plugins добавить ForkTsCheckerWebpackPlugin, который будет выполнять проверку типов в отдельном процессе и не будет тормозить сборку
+        options: {
+          transpileOnly: isDev,
+        },
+      },
+    ],
     exclude: /node_modules/,
   };
 

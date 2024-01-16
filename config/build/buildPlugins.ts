@@ -3,6 +3,7 @@ import webpack, { Configuration, DefinePlugin } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions): Configuration['plugins'] {
   const isDev = mode === 'development';
@@ -24,6 +25,15 @@ export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions):
       // Показывает в терминале процент выполнения во время сборки
       // В production не рекомендуют использовать, т.к. он может сильно замедлять сборку
       new webpack.ProgressPlugin()
+    );
+
+    plugins.push(
+      // Выносит проверку типов в отдельный процесс, не нагружая сборку (распараллеливаем сборку и проверку типов)
+      // Особенно полезно использовать для проверки типов "налету", когда мы отключаем проверку типов с помощью transpileOnly: true в ts-loader
+      // То есть, с помощью transpileOnly: true мы сказали webpack-у: Транспилируй, но не проверяй ошибки типов
+      // А с помощью ForkTsCheckerWebpackPlugin мы все-таки продолжаем проверять ошибки TS, но в отдельном процессе, ускоряя сборку
+      // Прим. Мы отключили проверку типов transpileOnly: true только для dev-сборки, поэтому ForkTsCheckerWebpackPlugin используем только в dev-сборке. В prod-сборке проверку типов выполняет ts-loader
+      new ForkTsCheckerWebpackPlugin()
     );
   }
 
