@@ -1,16 +1,22 @@
 import { BuildOptions } from './types/types';
-import webpack, { Configuration } from 'webpack';
+import webpack, { Configuration, DefinePlugin } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-export function buildPlugins({ mode, paths, analyzer }: BuildOptions): Configuration['plugins'] {
+export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions): Configuration['plugins'] {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
 
   const plugins: Configuration['plugins'] = [
     // Будет создавать html-файл из указанного шаблона и подключать в него собранные бандлы через <script>
     new HtmlWebpackPlugin({ template: paths.html }),
+
+    // Для установки ГЛОБАЛЬНЫХ переменных в проекте
+    new DefinePlugin({
+      __PLATFORM__: JSON.stringify(platform),
+      __ENV__: JSON.stringify(mode),
+    }),
   ];
 
   if (isDev) {
