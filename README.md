@@ -1,4 +1,4 @@
-# Webpack-Microfrontends-Monorepo-SP
+# Webpack-settings-SP
 
 https://www.youtube.com/watch?v=acAH2_YT6bs
 

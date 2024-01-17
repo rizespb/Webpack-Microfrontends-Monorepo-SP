@@ -2,6 +2,7 @@ import { ModuleOptions } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BuildOptions } from './types/types';
 import ReactRefreshTypeScript from 'react-refresh-typescript';
+import { buildBabelLoader } from './babel/buildBabelLoader';
 
 export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
   const isDev = options.mode === 'development';
@@ -94,29 +95,7 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
     exclude: /node_modules/,
   };
 
-  const babelLoader = {
-    test: /\.tsx?$/,
-    exclude: /node_modules/,
-    use: {
-      loader: 'babel-loader',
-      // Настройки для babel можно хранить и в options, и в отдельном файле babel.config (например, если эти же конфиги используются в jest)
-      // options: {
-      //   presets: [
-      //     '@babel/preset-env',
-      //     // Пресет, чтобы babel мог работать с TS
-      //     '@babel/preset-typescript',
-      //     // Пресет, чтобы babel мог работать с React
-      //     [
-      //       '@babel/preset-react',
-      //       // Опции для пресета @babel/preset-react, без них не работает dev-сервер
-      //       {
-      //         runtime: isDev ? 'automatic' : 'classic',
-      //       },
-      //     ],
-      //   ],
-      // },
-    },
-  };
+  const babelLoader = buildBabelLoader(options);
 
   return [
     assetLoader,
@@ -126,6 +105,7 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
     // Если бы не использовали TypeScript, нам бы пришлось подключать babel-loader,
     // tsLoader,
     // В дальнейшем заменили ts-loader на babel-лоадер, т.к. babel легче поддается кастомизации (свои плагины и т.д.)
+    // Можно использовать еще swc-loader или esbuild-loader
     babelLoader,
 
     svgLoader,

@@ -1,16 +1,17 @@
 {
   // Эти же настройки можно поместить в свойство options в настройках babel-лоадера в конфигах вебпака
-  "presets": [
-    "@babel/preset-env",
-    // Пресет, чтобы babel мог работать с TS
-    "@babel/preset-typescript",
-    // Пресет, чтобы babel мог работать с React
-    [
-      "@babel/preset-react",
-      // Опции для пресета @babel/preset-react, без них не работает dev-сервер
-      {
-        "runtime": "automatic"
-      }
-    ]
-  ]
+  // В отдельный файл можно вынести, например, когда эти же настройки нужны, например, для jest
+  // "presets": [
+  //   "@babel/preset-env",
+  //   // Пресет, чтобы babel мог работать с TS
+  //   "@babel/preset-typescript",
+  //   // Пресет, чтобы babel мог работать с React
+  //   [
+  //     "@babel/preset-react",
+  //     // Опции для пресета @babel/preset-react, без них не работает dev-сервер
+  //     {
+  //       "runtime": "automatic"
+  //     }
+  //   ]
+  // ]
 }

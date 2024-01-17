@@ -1,22 +1,29 @@
 import { useState } from 'react';
 import classes from './App.module.scss';
 import { Link, Outlet } from 'react-router-dom';
-import About from '@/pages/About/About';
 import avatarPng from '@/assets/avatar.png';
 import avatarJpg from '@/assets/avatar.jpg';
 import Calendar from '@/assets/calendar.svg';
 
 // TREE SHAKING
 function TODO() {
-  console.log('TODO_FUNCTION');
+  TODO2();
+}
+function TODO2() {
+  throw new Error();
 }
 
 export const App = () => {
   const [count, setCount] = useState<number>(0);
 
-  const increment = () => setCount((prev) => prev + 1);
+  const increment = () => {
+    // setCount((prev) => prev + 1);
 
-  TODO();
+    // Пример для отслеживания стэк-трейса с помощью source-map
+    TODO();
+  };
+
+  // TODO();
 
   // if (__PLATFORM__ === 'desktop') {
   //   return <div>DESKTOP PLATFORM</div>;
@@ -31,8 +38,8 @@ export const App = () => {
   // }
 
   return (
-    <div>
-      <h1>PLATFROM = {__PLATFORM__}</h1>
+    <div data-testid="App.DataTestId">
+      <h1 data-testid="Platform.DataTestId">PLATFROM = {__PLATFORM__}</h1>
 
       <div>
         <img src={avatarPng} alt="" />
@@ -53,7 +60,41 @@ export const App = () => {
         <span>inc</span>
       </button>
 
-      <About />
+      <div>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores dolorem, aperiam itaque sint tempore,
+        excepturi, facilis quod quam iste praesentium esse? Nihil distinctio repellat dicta inventore labore, deleniti
+        voluptates expedita? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit dignissimos fugit
+        aliquid laboriosam tenetur voluptates tempora doloremque ipsam ratione perspiciatis assumenda, quam alias?
+        Obcaecati iste libero ipsa, veniam odit debitis? Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores dolorem, aperiam itaque sint tempore,
+        excepturi, facilis quod quam iste praesentium esse? Nihil distinctio repellat dicta inventore labore, deleniti
+        voluptates expedita? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit dignissimos fugit
+        aliquid laboriosam tenetur voluptates tempora doloremque ipsam ratione perspiciatis assumenda, quam alias?
+        Obcaecati iste libero ipsa, veniam odit debitis? Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores dolorem, aperiam itaque sint tempore,
+        excepturi, facilis quod quam iste praesentium esse? Nihil distinctio repellat dicta inventore labore, deleniti
+        voluptates expedita? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit dignissimos fugit
+        aliquid laboriosam tenetur voluptates tempora doloremque ipsam ratione perspiciatis assumenda, quam alias?
+        Obcaecati iste libero ipsa, veniam odit debitis? Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores dolorem, aperiam itaque sint tempore,
+        excepturi, facilis quod quam iste praesentium esse? Nihil distinctio repellat dicta inventore labore, deleniti
+        voluptates expedita? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit dignissimos fugit
+        aliquid laboriosam tenetur voluptates tempora doloremque ipsam ratione perspiciatis assumenda, quam alias?
+        Obcaecati iste libero ipsa, veniam odit debitis? Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
+      <div>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores dolorem, aperiam itaque sint tempore,
+        excepturi, facilis quod quam iste praesentium esse? Nihil distinctio repellat dicta inventore labore, deleniti
+        voluptates expedita? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit dignissimos fugit
+        aliquid laboriosam tenetur voluptates tempora doloremque ipsam ratione perspiciatis assumenda, quam alias?
+        Obcaecati iste libero ipsa, veniam odit debitis? Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
     </div>
   );
 };

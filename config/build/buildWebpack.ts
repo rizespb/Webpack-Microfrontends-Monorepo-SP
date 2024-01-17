@@ -50,7 +50,7 @@ export function buildWebpack(options: BuildOptions): webpack.Configuration {
     resolve: buildResolvers(options),
 
     // Настройка для формирования source map
-    devtool: isDev && 'inline-source-map',
+    devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
 
     // Настройки дев сервера для webpack-dev-server (автоматическое обновление страницы при изменении кода)
     devServer: isDev ? buildDevServer(options) : undefined,
