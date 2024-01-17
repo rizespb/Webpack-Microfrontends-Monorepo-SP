@@ -5,6 +5,9 @@ export interface BuildPaths {
   //путь до index.html
   html: string;
 
+  // путь до папки public
+  public: string;
+
   // путь до папки со сборкой
   output: string;
 

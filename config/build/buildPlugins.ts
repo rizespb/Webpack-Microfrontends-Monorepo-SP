@@ -1,3 +1,5 @@
+import CopyPlugin from 'copy-webpack-plugin';
+import path from 'path';
 import { BuildOptions } from './types/types';
 import webpack, { Configuration, DefinePlugin } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -12,7 +14,13 @@ export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions):
 
   const plugins: Configuration['plugins'] = [
     // Будет создавать html-файл из указанного шаблона и подключать в него собранные бандлы через <script>
-    new HtmlWebpackPlugin({ template: paths.html }),
+    new HtmlWebpackPlugin({
+      // Путь к файлу index.html
+      template: paths.html,
+
+      // Путь к favicon
+      favicon: path.resolve(paths.public, 'favicon.ico'),
+    }),
 
     // Для установки ГЛОБАЛЬНЫХ переменных в проекте
     new DefinePlugin({
@@ -51,6 +59,19 @@ export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions):
         // contenthash - хэш по контенту (будет пересчитываться при изменении контента)
         filename: 'css/[name].[contenthash:8].css',
         chunkFilename: 'css/[name].[contenthash:8].css',
+      })
+    );
+
+    // Копирует файлы из проекта в сборку
+    // Для примера копируем файлы с переводами
+    plugins.push(
+      new CopyPlugin({
+        patterns: [
+          {
+            from: path.resolve(paths.public, 'locales'),
+            to: path.resolve(paths.output, 'locales'),
+          },
+        ],
       })
     );
   }
