@@ -68,6 +68,7 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
   //   exclude: /node_modules/,
   // };
 
+  // В дальнейшем заменили ts-loader на babel-лоадер, т.к. babel легче поддается кастомизации (свои плагины и т.д.)
   const tsLoader = {
     // Регулярка для имени файла, которые надо обрабатывать лоадером
     test: /\.tsx?$/,
@@ -93,13 +94,39 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
     exclude: /node_modules/,
   };
 
+  const babelLoader = {
+    test: /\.tsx?$/,
+    exclude: /node_modules/,
+    use: {
+      loader: 'babel-loader',
+      // Настройки для babel можно хранить и в options, и в отдельном файле babel.config (например, если эти же конфиги используются в jest)
+      // options: {
+      //   presets: [
+      //     '@babel/preset-env',
+      //     // Пресет, чтобы babel мог работать с TS
+      //     '@babel/preset-typescript',
+      //     // Пресет, чтобы babel мог работать с React
+      //     [
+      //       '@babel/preset-react',
+      //       // Опции для пресета @babel/preset-react, без них не работает dev-сервер
+      //       {
+      //         runtime: isDev ? 'automatic' : 'classic',
+      //       },
+      //     ],
+      //   ],
+      // },
+    },
+  };
+
   return [
     assetLoader,
     scssLoader,
 
     // ts-loader умеет работать с JSX
     // Если бы не использовали TypeScript, нам бы пришлось подключать babel-loader,
-    tsLoader,
+    // tsLoader,
+    // В дальнейшем заменили ts-loader на babel-лоадер, т.к. babel легче поддается кастомизации (свои плагины и т.д.)
+    babelLoader,
 
     svgLoader,
   ];
