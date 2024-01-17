@@ -1,6 +1,7 @@
 import { ModuleOptions } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BuildOptions } from './types/types';
+import ReactRefreshTypeScript from 'react-refresh-typescript';
 
 export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
   const isDev = options.mode === 'development';
@@ -80,6 +81,12 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
         // Чтобы продолжать выполнять проверку типов "налету", можно в plugins добавить ForkTsCheckerWebpackPlugin, который будет выполнять проверку типов в отдельном процессе и не будет тормозить сборку
         options: {
           transpileOnly: isDev,
+
+          // Настройка для обновления страницы без перезагрузки (используется совместно с опцией hot:true в настройках dev-сервера и ReactRefreshWebpackPlugin)
+          // @pmmmwh/react-refresh-webpack-plugin + react-refresh+ react-refresh-typescript
+          getCustomTransformers: () => ({
+            before: [isDev && ReactRefreshTypeScript()].filter(Boolean),
+          }),
         },
       },
     ],

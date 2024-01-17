@@ -18,17 +18,17 @@ export const App = () => {
 
   TODO();
 
-  if (__PLATFORM__ === 'desktop') {
-    return <div>DESKTOP PLATFORM</div>;
-  }
+  // if (__PLATFORM__ === 'desktop') {
+  //   return <div>DESKTOP PLATFORM</div>;
+  // }
 
-  if (__PLATFORM__ === 'mobile') {
-    return <div>MOBILE PLATFORM</div>;
-  }
+  // if (__PLATFORM__ === 'mobile') {
+  //   return <div>MOBILE PLATFORM</div>;
+  // }
 
-  if (__ENV__ === 'development') {
-    // ...some code
-  }
+  // if (__ENV__ === 'development') {
+  //   // ...some code
+  // }
 
   return (
     <div>

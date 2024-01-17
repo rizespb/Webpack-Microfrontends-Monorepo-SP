@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
 export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions): Configuration['plugins'] {
   const isDev = mode === 'development';
@@ -35,6 +36,10 @@ export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions):
       // Прим. Мы отключили проверку типов transpileOnly: true только для dev-сборки, поэтому ForkTsCheckerWebpackPlugin используем только в dev-сборке. В prod-сборке проверку типов выполняет ts-loader
       new ForkTsCheckerWebpackPlugin()
     );
+
+    // Плагин для обновления страницы без перезагрузки (используется совместно с опцией hot:true в настройках dev-сервера и опцией getCustomTransformers в ts-loader)
+    // @pmmmwh/react-refresh-webpack-plugin + react-refresh+ react-refresh-typescript
+    plugins.push(new ReactRefreshWebpackPlugin());
   }
 
   if (isProd) {
