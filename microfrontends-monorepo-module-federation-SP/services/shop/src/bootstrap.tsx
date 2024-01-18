@@ -1,8 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import { App } from './components/App/App';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Shop } from '@/pages/Shop';
-import { Suspense } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router/Router';
 
 const root = document.getElementById('root');
 
@@ -11,22 +9,5 @@ if (!root) {
 }
 
 const container = createRoot(root);
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '/shop',
-        element: (
-          <Suspense fallback={'Loading...'}>
-            <Shop />
-          </Suspense>
-        ),
-      },
-    ],
-  },
-]);
 
 container.render(<RouterProvider router={router} />);
