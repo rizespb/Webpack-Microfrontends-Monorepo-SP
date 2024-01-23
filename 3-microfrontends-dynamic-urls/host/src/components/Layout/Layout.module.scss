@@ -1,0 +1,23 @@
+.menu {
+  margin-bottom: 33px;
+  padding: 22px;
+  border: 1px solid blue;
+  border-radius: 13px;
+  color: green;
+
+  a,
+  a:visited,
+  a:active {
+    color: red;
+    text-decoration: none;
+  }
+}
+
+.nav {
+  display: flex;
+  gap: 50px;
+}
+
+.heading {
+  margin: 0 0 13px;
+}

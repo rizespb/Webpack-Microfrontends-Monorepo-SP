@@ -1,0 +1,16 @@
+.menu {
+  border: 1px solid orange;
+  border-radius: 13px;
+}
+
+.nav {
+  display: flex;
+  gap: 33px;
+
+  a,
+  a:active,
+  a:visited {
+    color: blue;
+    text-decoration: none;
+  }
+}

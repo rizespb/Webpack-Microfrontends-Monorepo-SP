@@ -1,0 +1,1 @@
+export { MicrofrontendPage } from './MicrofrontendPage';

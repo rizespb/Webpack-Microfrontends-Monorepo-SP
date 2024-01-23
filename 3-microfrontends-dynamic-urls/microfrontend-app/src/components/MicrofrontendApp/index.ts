@@ -1,0 +1,1 @@
+export { MicrofrontendApp } from './MicrofrontendApp';
