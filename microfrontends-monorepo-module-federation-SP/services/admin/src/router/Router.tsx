@@ -5,11 +5,11 @@ import { Suspense } from 'react';
 
 const routes = [
   {
-    path: '/',
+    path: '/admin',
     element: <App />,
     children: [
       {
-        path: '/about',
+        path: '/admin/about',
         element: (
           <Suspense fallback={'Loading...'}>
             <About />
@@ -22,4 +22,4 @@ const routes = [
 
 export const router = createBrowserRouter(routes);
 
-export default router;
+export default routes;

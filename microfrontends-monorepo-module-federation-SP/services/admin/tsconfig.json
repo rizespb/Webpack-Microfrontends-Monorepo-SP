@@ -26,6 +26,9 @@
     // import React from 'react';
     "allowSyntheticDefaultImports": true,
 
+    // Возможность импортиорвать из *.json-файлов
+    "resolveJsonModule": true,
+
     // Алиасы
     "baseUrl": ".",
     "paths": {

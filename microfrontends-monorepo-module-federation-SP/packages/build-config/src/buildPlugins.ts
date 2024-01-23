@@ -20,6 +20,9 @@ export function buildPlugins({ mode, paths, analyzer, platform }: BuildOptions):
 
       // Путь к favicon
       favicon: path.resolve(paths.public, 'favicon.ico'),
+
+      // Путь к статическим файлам (для правильной подгрузки чанков микрофронтов)
+      publicPath: '/',
     }),
 
     // Для установки ГЛОБАЛЬНЫХ переменных в проекте

@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import { buildWebpack, BuildMode, BuildPaths, BuildOptions, BuildPlatform } from '@packages/build-config';
+import packageJson from './package.json';
 
 interface EnvCariables {
   mode?: BuildMode;
@@ -19,12 +20,48 @@ export default (env: EnvCariables) => {
   };
 
   const config: webpack.Configuration = buildWebpack({
-    port: env.port ?? 3000,
+    port: env.port ?? 3001,
     mode: env.mode ?? 'development',
     paths,
     analyzer: env.analyzer,
     platform: env.platform ?? 'desktop',
   });
+
+  // Настройка микрофронтов
+  // Для хост-приложения и микрофронтов немного отличаются
+  config.plugins.push(
+    new webpack.container.ModuleFederationPlugin({
+      // Название МФ-а
+      name: 'shop',
+
+      // Название файла, который будет загружаться и подключаться в хост-контейнер. По умолчанию, remoteEntry
+      filename: 'remoteEntry.js',
+
+      // Какой именно файл и под каким именем мы хотим предоставить приложению-контейнеру
+      exposes: {
+        './Router': './src/router/Router.tsx',
+      },
+
+      // Какие библиотеки у нас общие и должны шариться
+      shared: {
+        ...packageJson.dependencies,
+        react: {
+          // Загружать зависимость сразу (не отложено, не лениво)
+          eager: true,
+          // Требуемая версия
+          requiredVersion: packageJson.dependencies['react'],
+        },
+        'react-router-dom': {
+          eager: true,
+          requiredVersion: packageJson.dependencies['react-router-dom'],
+        },
+        'react-dom': {
+          eager: true,
+          requiredVersion: packageJson.dependencies['react-dom'],
+        },
+      },
+    })
+  );
 
   return config;
 };
