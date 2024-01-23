@@ -4,5 +4,16 @@
   "workspaces": [
     "packages/*",
     "services/*"
-  ]
+  ],
+  "scripts": {
+    "start:host": "npm run start -w host",
+    "start:admin": "npm run start -w admin",
+    "start:shop": "npm run start -w shop",
+    "________________": "start:all запустит npm start во всех workspace-ах (в том числе и в packages/shared и пр.",
+    "start:all": "npm run start -workspaces",
+    "start": "concurrently  \"npm run start:host\" \"npm run start:admin\" \"npm run start:shop\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
